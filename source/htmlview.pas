@@ -838,7 +838,7 @@ end;
 constructor THtmlViewer.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
-  if Owner is THtmlFrameBase then
+  if (Owner is THtmlFrameBase) then
     FFrameOwner := THtmlFrameBase(Owner);
   ControlStyle := [csAcceptsControls, csCaptureMouse, csClickEvents, csSetCaption, csDoubleClicks];
   Include(FViewerState, vsCreating);
@@ -943,9 +943,9 @@ begin
     FPaintPanel.OnGesture := HtmlGesture;
 {$endif}
 
-  if Owner is THtmlFrameBase then
+  if (Owner is THtmlFrameBase) then
     FFrameOwner := THtmlFrameBase(Owner);
-  if Source is THtmlViewer then
+  if (Source is THtmlViewer) then
   begin
     Self.QuirksMode := Viewer.QuirksMode;
     FBase := Viewer.FBase;
@@ -2108,7 +2108,7 @@ var
   DummyFC: TIDObject {TImageFormControlObj};
   FormControlObj: TFormControlObj absolute Sender;
 begin
-  if Sender is TFormControlObj then
+  if (Sender is TFormControlObj) then
     //with TFormControlObj(Sender) do
     begin
       FTitleAttr := FormControlObj.Title;
@@ -2765,7 +2765,7 @@ begin
     FImagesReformat := False;
     while FInsertedImages.Count > 0 do
     begin
-      if FInsertedImages.Objects[0] is ThtBitmapToInsert then
+      if (FInsertedImages.Objects[0] is ThtBitmapToInsert) then
       begin
         with FInsertedImages.Objects[0] as ThtBitmapToInsert do
           FSectionList.InsertImage(FInsertedImages[0], Bitmap, Color, Transp, OwnsBitmap, ImageReformat);
@@ -4675,7 +4675,7 @@ procedure THtmlViewer.FormControlEnterEvent(Sender: TObject);
 var
   Y, Pos: Integer;
 begin
-  if Sender is TFormControlObj then
+  if (Sender is TFormControlObj) then
   begin
     Y := TFormControlObj(Sender).DrawYY;
     Pos := VScrollBarPosition;
@@ -4685,7 +4685,7 @@ begin
       Invalidate;
     end;
   end
-  else if Sender is TFontObj and not NoJump then
+  else if (Sender is TFontObj) and not NoJump then
   begin
     Y := TFontObj(Sender).DrawYY;
     Pos := VScrollBarPosition;
@@ -5380,7 +5380,7 @@ var
 begin
   I := -1;
   if FNameList.Find(NameID, I) then
-    if FNameList.Objects[I] is TImageObj then
+    if (FNameList.Objects[I] is TImageObj) then
     begin
       TImageObj(FNameList.Objects[I]).ReplaceImage(NewImage);
       if not TImageObj(FNameList.Objects[I]).ClientSizeKnown then
@@ -5405,10 +5405,10 @@ begin
     if Find(ID, I) then
     begin
       Obj := Objects[I];
-      if Obj is TFormControlObj then
+      if (Obj is TFormControlObj) then
         //BG, 15.01.2011: always return Obj rather than the actual WinControl.
         Result := Obj
-      else if Obj is TImageObj then
+      else if (Obj is TImageObj) then
         Result := Obj;
     end;
 end;
@@ -5424,7 +5424,7 @@ begin
     if Find(ID, I) then
     begin
       Obj := Objects[I];
-      if Obj is TSectionBase then
+      if (Obj is TSectionBase) then
         Result := TSectionBase(Obj).Display;
     end;
 end;
@@ -5439,7 +5439,7 @@ begin
     if Find(ID, I) then
     begin
       Obj := Objects[I];
-      if Obj is TSectionBase then
+      if (Obj is TSectionBase) then
         if TSectionBase(Obj).Display <> Value then
         begin
           FSectionList.HideControls;

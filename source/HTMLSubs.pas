@@ -4349,7 +4349,7 @@ var
 begin
   if Assigned(Item) then
   begin
-    if Item is TSection then
+    if (Item is TSection) then
       Add(Section, TagIndex)
     else
       inherited Add(Item);
@@ -4407,7 +4407,7 @@ begin
   while I < Count do
   begin
     TB := Items[I];
-    if TB is TSection and (Length(Trim(TSection(TB).BuffS)) = 0) then
+    if (TB is TSection) and (Length(Trim(TSection(TB).BuffS)) = 0) then
     else if not (TB is TBlock) or (TBlock(TB).Positioning <> PosAbsolute) then
         break;
 
@@ -4415,7 +4415,7 @@ begin
   end;
   if I < Count then
   begin
-    if TB is TBlock then
+    if (TB is TBlock) then
     begin
       if Block.TopAuto then
       begin
@@ -4431,7 +4431,7 @@ begin
   while J >= I do
   begin
     TB := Items[J];
-    if TB is TSection and (Length(Trim(TSection(TB).BuffS)) = 0) then
+    if (TB is TSection) and (Length(Trim(TSection(TB).BuffS)) = 0) then
     else if not (TB is TBlock) or (TBlock(TB).Positioning <> PosAbsolute) then
       break;
 
@@ -4439,14 +4439,14 @@ begin
   end;
   if J >= 0 then
   begin
-    if TB is TBlock then
+    if (TB is TBlock) then
     begin
       if Block.BottomAuto then
       begin
         Block.MargArray[MarginBottom] := 0;
         Result := True;
       end;
-      if TB is TBlockLI then
+      if (TB is TBlockLI) then
         Result := TBlockLI(TB).MyCell.CheckLastBottomMargin;
     end;
   end;
@@ -4572,9 +4572,9 @@ begin
   for I := 0 to Count - 1 do
   begin
     Item := Items[I];
-    if Item is TBlock then
+    if (Item is TBlock) then
       TBlock(Item).FormTree(Indent, Tree)
-    else if Item is TSection then
+    else if (Item is TSection) then
       Tree := Tree + Indent + Copy(TSection(Item).BuffS, 1, 10) + CrChar + LfChar
     else
       Tree := Tree + Indent + '----'^M^J;
@@ -4882,7 +4882,7 @@ begin
     begin
       if ((TB is TTableBlock) or (TB is TTableAndCaptionBlock)) and (TBlock(TB).Floating in [ALeft, ARight]) and TopAuto then
         MargArray[MarginTop] := 0
-      else if TB is TBlock then
+      else if (TB is TBlock) then
       begin
         if Block.Positioning = posStatic then
         begin
@@ -5860,7 +5860,7 @@ function TBlock.Draw1(Canvas: TCanvas; const ARect: TRect; IMgr: TIndentManager;
           if Result < Document.PageBottom then
             Document.PageBottom := Result;
       end
-      else if Self is TTableBlock and not TTableBlock(Self).Table.HeadOrFoot then {ordinary tables}
+      else if (Self is TTableBlock) and not TTableBlock(Self).Table.HeadOrFoot then {ordinary tables}
       {if we're printing and
        we're 2/3 down page and table won't fit on this page and table will fit on
        next page, then don't do table now}
@@ -5874,7 +5874,7 @@ function TBlock.Draw1(Canvas: TCanvas; const ARect: TRect; IMgr: TIndentManager;
           Exit;
         end;
       end
-      else if Self is TTableBlock then {try to avoid just a header and footer at page break}
+      else if (Self is TTableBlock) then {try to avoid just a header and footer at page break}
         with TTableBlock(Self).Table do
           if HeadOrFoot and (Document.TableNestLevel = 0)
             and ((Document.PrintingTable = nil) or
@@ -7416,7 +7416,7 @@ begin
   if IsCopy then
     Exit;
   Frame := 0;
-  IsAniGifBackground := BackgroundImage is ThtGifImage;
+  IsAniGifBackground := (BackgroundImage is ThtGifImage);
   if IsAniGifBackground then
   begin
     IsAniGifBackground := ThtGifImage(BackgroundImage).Gif.Animate;
@@ -7427,7 +7427,7 @@ begin
   for I := 0 to AniList.Count - 1 do
   begin
     Image := AniList[I];
-    if Image is ThtGifImage then
+    if (Image is ThtGifImage) then
       with ThtGifImage(Image).Gif do
         if ShowIt then
           CheckTime(PPanel);
@@ -7581,12 +7581,12 @@ begin
     for I := 0 to TabOrderList.Count - 1 do {list is sorted into proper order}
     begin
       Obj := TabOrderList.Objects[I];
-      if Obj is TFormControlObj then
+      if (Obj is TFormControlObj) then
       begin
         TFormControlObj(Obj).TabOrder := J;
         Inc(J);
       end
-      else if Obj is ThtTabControl then
+      else if (Obj is ThtTabControl) then
       begin
         ThtTabControl(Obj).TabOrder := J;
         Inc(J);
@@ -7602,7 +7602,7 @@ begin
   for I := 0 to AniList.Count - 1 do
   begin
     Image := AniList[I];
-    if Image is ThtGifImage then
+    if (Image is ThtGifImage) then
       with ThtGifImage(Image).Gif do
       begin
         ShowIt := False; // when gif is drawn, it will set it to true again. Avoids animating invisible gifs.
@@ -7784,7 +7784,7 @@ begin
         GetBackgroundImage();
       end;
     end
-    else if Obj is TImageObj then
+    else if (Obj is TImageObj) then
     begin
       TImageObj(Obj).InsertImage(UName, Error, Rformat);
       Reformat := Reformat or Rformat;
@@ -8288,7 +8288,7 @@ var
   CellObj: TCellObj absolute Destin;
 begin
   inherited AssignTo(Destin);
-  if Destin is TCellObj then
+  if (Destin is TCellObj) then
   begin
     Move(FWd, CellObj.FWd, PtrSub(@FCell, @FWd));
 
@@ -8840,7 +8840,7 @@ var
   CellObj: TCellObj absolute CellObjBase;
 begin
   inherited Add(CellObjBase);
-  if CellObjBase is TCellObj then
+  if (CellObjBase is TCellObj) then
   begin
     BreakBefore := BreakBefore or CellObj.BreakBefore;
     BreakAfter := BreakAfter or CellObj.BreakAfter;
@@ -8895,7 +8895,7 @@ var
 begin
   if BkGnd then
     for I := 0 to Count - 1 do
-      if Items[I] is TCellObj then
+      if (Items[I] is TCellObj) then
         with TCellObj(Items[I]).Cell do
           if not BkGnd then
           begin
@@ -8923,7 +8923,7 @@ begin
   More := False;
   for I := 0 to Count - 1 do
   begin
-    if Items[I] is TCellObj then
+    if (Items[I] is TCellObj) then
       with TCellObj(Items[I]) do
         if ColSpan > 0 then {skip the dummy cells}
         begin
@@ -10406,7 +10406,7 @@ function THtmlTable.DrawLogic1(Canvas: TCanvas; X, Y, XRef, YRef, AWidth, AHeigh
         RowSpanHeight := 0;
         Inc(Result, RowHeight);
         for I := 0 to Count - 1 do
-          if Items[I] is TCellObj then
+          if (Items[I] is TCellObj) then
           begin
             CellObj := TCellObj(Items[I]);
             with CellObj do
@@ -10821,7 +10821,7 @@ function THtmlTable.GetURL(Canvas: TCanvas; X, Y: Integer;
       XX := DrawX;
       for I := 0 to Row.Count - 1 do
       begin
-        if Row[I] is TCellObj then
+        if (Row[I] is TCellObj) then
         begin
           CellObj := TCellObj(Row[I]);
           if (X >= XX) and (X < XX + CellObj.Wd) and (Y >= CellObj.Cell.DrawYY) and (Y < CellObj.Cell.DrawYY + CellObj.Ht) then
@@ -10861,7 +10861,7 @@ function THtmlTable.PtInObject(X, Y: Integer; out Obj: TObject; out IX, IY: Inte
       XX := DrawX;
       for I := 0 to Row.Count - 1 do
       begin
-        if Row[I] is TCellObj then
+        if (Row[I] is TCellObj) then
         begin
           CellObj := TCellObj(Row[I]);
           if (X >= XX) and (X < XX + CellObj.Wd) and (Y >= CellObj.Cell.DrawYY) and (Y < CellObj.Cell.DrawYY + CellObj.Ht) then
@@ -10900,7 +10900,7 @@ function THtmlTable.FindCursor(Canvas: TCanvas; X, Y: Integer;
       XX := DrawX;
       for I := 0 to Row.Count - 1 do
       begin
-        if Row[I] is TCellObj then
+        if (Row[I] is TCellObj) then
         begin
           CellObj := TCellObj(Row[I]);
           if (X >= XX) and (X < XX + CellObj.Wd) and (Y >= CellObj.Cell.DrawYY) and (Y < CellObj.Cell.DrawYY + CellObj.Ht) then
@@ -10937,7 +10937,7 @@ begin
       Row := Rows[J];
       for I := 0 to Row.Count - 1 do
       begin
-        if Row[I] is TCellObj then
+        if (Row[I] is TCellObj) then
         begin
           Result := TCellObj(Row[I]).Cell.CursorToXy(Canvas, Cursor, X, Y);
           if Result then
@@ -10963,7 +10963,7 @@ begin
       Row := Rows[J];
       for I := 0 to Row.Count - 1 do
       begin
-        if Row[I] is TCellObj then
+        if (Row[I] is TCellObj) then
         begin
           Result := TCellObj(Row[I]).Cell.GetChAtPos(Pos, Ch, Obj);
           if Result then
@@ -10987,7 +10987,7 @@ begin
     Row := Rows[J];
     for I := 0 to Row.Count - 1 do
     begin
-      if Row[I] is TCellObj then
+      if (Row[I] is TCellObj) then
       begin
         Result := TCellObj(Row[I]).Cell.FindString(From, ToFind, MatchCase);
         if Result >= 0 then
@@ -11010,7 +11010,7 @@ begin
     Row := Rows[J];
     for I := Row.Count - 1 downto 0 do
     begin
-      if Row[I] is TCellObj then
+      if (Row[I] is TCellObj) then
       begin
         Result := TCellObj(Row[I]).Cell.FindStringR(From, ToFind, MatchCase);
         if Result >= 0 then
@@ -11033,7 +11033,7 @@ begin
     Row := Rows[J];
     for I := 0 to Row.Count - 1 do
     begin
-      if Row[I] is TCellObj then
+      if (Row[I] is TCellObj) then
       begin
         Result := TCellObj(Row[I]).Cell.FindSourcePos(DocPos);
         if Result >= 0 then
@@ -11058,7 +11058,7 @@ begin
       if Row <> nil then
         for I := 0 to Row.Count - 1 do
         begin
-          if Row[I] is TCellObj then
+          if (Row[I] is TCellObj) then
           begin
             Result := TCellObj(Row[I]).Cell.FindDocPos(SourcePos, Prev);
             if Result >= 0 then
@@ -11073,7 +11073,7 @@ begin
       if Row <> nil then
         for I := Row.Count - 1 downto 0 do
         begin
-          if Row[I] is TCellObj then
+          if (Row[I] is TCellObj) then
           begin
             Result := TCellObj(Row[I]).Cell.FindDocPos(SourcePos, Prev);
             if Result >= 0 then
@@ -11095,7 +11095,7 @@ begin
   begin
     Row := Rows[J];
     for I := 0 to Row.Count - 1 do
-      if Row[I] is TCellObj then
+      if (Row[I] is TCellObj) then
         TCellObj(Row[I]).Cell.CopySelectedText;
   end;
 end;
@@ -11178,7 +11178,7 @@ begin
 
   BreakWord := Prop.Props[WordWrap] = 'break-word';
 
-  if Self is TPreFormated then
+  if (Self is TPreFormated) then
     WhiteSpaceStyle := wsPre
   else if Document.NoBreak then
     WhiteSpaceStyle := wsNoWrap
@@ -13191,7 +13191,7 @@ var
       Canvas.Font.Color := ForeColor;
       if J2 = -1 then
       begin {it's an image or panel}
-        if FlObj is TImageObj then
+        if (FlObj is TImageObj) then
         begin
           if FlObj.Floating in [ALeft, ARight] then
           begin
@@ -13275,7 +13275,7 @@ var
         end
         else
         begin {it's a Panel or Frame}
-          if FlObj is TControlObj then
+          if (FlObj is TControlObj) then
             TControlObj(FlObj).ShowIt := True;
           if FlObj.Floating in [ALeft, ARight] then
           begin
@@ -13366,9 +13366,9 @@ var
             else
                          TopP := Y; {never get here}
             end;
-            if FcObj is TRadioButtonFormControlObj then
+            if (FcObj is TRadioButtonFormControlObj) then
               Inc(Topp, 2)
-            else if FcObj is TCheckBoxFormControlObj then
+            else if (FcObj is TCheckBoxFormControlObj) then
               Inc(Topp, 1);
 
           {Check for border}
@@ -14617,7 +14617,7 @@ function TBlockCell.DoLogicX(Canvas: TCanvas; X, Y, XRef, YRef, Width, AHeight, 
         ScrollWidth := Width
       else
         ScrollWidth := Max(ScrollWidth, Sw);
-      if SB is TSection then
+      if (SB is TSection) then
         TextWidth := Max(TextWidth, TSection(SB).TextWidth);
       if not (SB is TBlock) or (TBlock(SB).Positioning <> posAbsolute) then
         tcContentBot := Max(tcContentBot, SB.ContentBot);
@@ -16205,7 +16205,7 @@ var
   Bitmap: TBitmap;
 begin
   // BG, 11.12.2011: frames aren't printable.
-  if FViewer is THtmlViewer then
+  if (FViewer is THtmlViewer) then
   begin
     HtmlViewer := THtmlViewer(FViewer);
     Bitmap := TBitmap.Create;
@@ -16454,7 +16454,7 @@ begin
   for I := 0 to Count - 1 do
   begin
     Obj := Items[I];
-    if Obj is TImageObj then
+    if (Obj is TImageObj) then
     begin
       if ImgObj.PtInDrawRect(X, Y, IX, IY) then
       begin
